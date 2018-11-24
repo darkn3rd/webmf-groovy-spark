@@ -19,7 +19,7 @@ On Ubuntu 16.04, you should have OpenJDK 8 or Oracle JDK 8, for example:
 sudo apt install -y openjdk-8-jdk
 ```
 
-Then install gradle 2.1 or greater:
+Then install [Gradle](https://gradle.org/) 2.1 or greater:
 
 
 ```bash
@@ -34,13 +34,13 @@ Note that gradle seems to have problems with OpenJDK 9, and the package `openjdk
 
 ## Running
 
-Build with embedded gradle 2.1:
+Build with embedded [Gradle](https://gradle.org/) 2.1:
 
 ```bash
 ./gradlew run &
 ```
 
-or alternatively with more recenct gradle:
+or alternatively with more recent [Gradle](https://gradle.org/):
 
 ```bash
 gradle build
@@ -57,7 +57,7 @@ curl http://127.0.0.1:4567/hello/James
 
 ## Vagrant
 
-For convenience, you can use Vagrant to bring up virtual guest and install java + build tools. Afterwards, you can test it manually.
+For convenience, you can use [Vagrant](https://www.vagrantup.com/) to bring up virtual guest and install java + build tools. Afterwards, you can test it manually.
 
 ```bash
 # startup and login to virtual guest
