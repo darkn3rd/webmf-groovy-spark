@@ -34,13 +34,15 @@ Note that gradle seems to have problems with OpenJDK 9, and the package `openjdk
 
 ## Running
 
+Build with embedded gradle 2.1:
+
 ```bash
 ./gradlew run &
 ```
 
-or alternatively
+or alternatively with more recenct gradle:
 
-``bash
+```bash
 gradle build
 gradle run &
 ```
