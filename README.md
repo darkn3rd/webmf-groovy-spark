@@ -1,46 +1,51 @@
+# Groovy-Gradle SparkJava micro-webframework example
+
+When I first created this repository in 2016, the installation process for the [Java](https://wikipedia.org/wiki/Java_(software_platform)), [Groovy](https://groovy-lang.org/), and [Gradle](https://gradle.org/) toolchains were consistent across macOS, Windows, and Linux (Debian/Ubuntu). However, since then, multiple JDKs have emerged, and the availability of Gradle and Groovy has varied. Therefore, I have switched to [SDKMan](https://sdkman.io/) for managing Java JDKs and SDKs.
+
 ## Installing
 
-### Mac OS X
+### Install SDKMan
 
 ```bash
-brew install groovy
-export GROOVY_HOME=/usr/local/opt/groovy/libexec
-brew install gradle
-```
-
-Note: Originally created boiler plate with `gradle init --type groovy-library`
-
-
-## Linux: Ubuntu 16.04
-
-On Ubuntu 16.04, you should have OpenJDK 8 or Oracle JDK 8, for example:
-
-```bash
-sudo apt install -y openjdk-8-jdk
-```
-
-Then install [Gradle](https://gradle.org/) 2.1 or greater:
-
-
-```bash
-sudo apt get install -y unzip zip
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk install gradle 4.10.2
 ```
 
-Note that gradle seems to have problems with OpenJDK 9, and the package `openjdk-9-jdk` from Ubuntu repository, does not even install.
+### Install Java
 
+Now this gets interesting as there are many different Java versions, each with its own trade-offs. I consider what other vendors, such as JetBrains TeamCity, use. They bundle [Amazon Corretto](https://aws.amazon.com/corretto/) for Windows and Docker images. For Apple ARM systems running on Apple Silicon, [Azul OpenJDK (Zulu)](https://www.azul.com/downloads/#zulu)  builds are popular and recommended. A team I worked with recently recommends [Eclipse Temurin](https://projects.eclipse.org/projects/adoptium.temurin).
+
+You can see a full list of JDKs supported by SDKman at https://sdkman.io/jdks.
+
+As an example, for Macbook M1, you can install JDK11 with:
+
+```bash
+sdk install java 21.0.3-zulu
+```
+
+### Install Groovy and Gradle
+
+```bash
+# small helper function to fetch latest version
+latest_version() {
+  sdk list $1 \
+   | grep -vE '.*-.*' \
+   | grep -oE '\b[0-9]+\.[0-9]+\.[0-9]+\b' \
+   | sort \
+   | tail -1
+}
+
+GRADLE_VERSION=$(latest_version gradle)
+GROOVY_VERSION=$(latest_version groovy)
+
+# install 
+sdk install gradle $GRADLE_VERSION
+sdk install groovy $GROOVY_VERSION
+```
 
 ## Running
 
-Build with embedded [Gradle](https://gradle.org/) 2.1:
-
-```bash
-./gradlew run &
-```
-
-or alternatively with more recent [Gradle](https://gradle.org/):
+You can build with the auto-generated [Gradle](https://gradle.org/) wrapper using `./gradlew run &` or run the build commands separately: 
 
 ```bash
 gradle build
@@ -50,23 +55,6 @@ gradle run &
 ## Testing
 
 ```bash
-curl http://127.0.0.1:4567/
-curl http://127.0.0.1:4567/hello
-curl http://127.0.0.1:4567/hello/James
-```
-
-## Vagrant
-
-For convenience, you can use [Vagrant](https://www.vagrantup.com/) to bring up virtual guest and install java + build tools. Afterwards, you can test it manually.
-
-```bash
-# startup and login to virtual guest
-vagrant up && vagrant ssh
-
-# inside vagrant environment
-cd /vagrant
-gradle build
-gradle run &
 curl http://127.0.0.1:4567/
 curl http://127.0.0.1:4567/hello
 curl http://127.0.0.1:4567/hello/James
