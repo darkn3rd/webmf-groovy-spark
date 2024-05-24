@@ -1,3 +1,4 @@
+package com.mycompany.app
 import static spark.Spark.*
 
 get('/', { req, res -> "Hello World!\n" })
